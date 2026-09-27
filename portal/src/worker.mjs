@@ -42,6 +42,26 @@ function readFile(form) {
   return file;
 }
 
+async function readForm(request) {
+  const type = request.headers.get('Content-Type') || '';
+  if (!type.toLowerCase().startsWith('multipart/form-data;')) throw new ApiError('Upload form required', 415);
+  const reader = request.body?.getReader();
+  if (!reader) throw new ApiError('Choose files to upload', 400);
+  const chunks = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > 25 * 1024 * 1024) {
+      await reader.cancel();
+      throw new ApiError('Upload is too large', 413);
+    }
+    chunks.push(value);
+  }
+  return new Response(new Blob(chunks, { type })).formData();
+}
+
 async function listAssets(env) {
   const snapshot = await getSnapshot(env);
   const paths = await getFiles(env, snapshot.tree);
@@ -73,7 +93,7 @@ async function history(env, searchParams) {
 }
 
 async function replaceLogo(request, env) {
-  const form = await request.formData();
+  const form = await readForm(request);
   const slug = form.get('slug');
   const file = readFile(form);
   const snapshot = await getSnapshot(env);
@@ -105,7 +125,7 @@ async function replaceLogo(request, env) {
 }
 
 async function uploadFiles(request, env) {
-  const form = await request.formData();
+  const form = await readForm(request);
   const category = form.get('category');
   if (category !== 'templates' && category !== 'uploads') throw new ApiError('Choose a valid category', 400);
   const files = form.getAll('files');
