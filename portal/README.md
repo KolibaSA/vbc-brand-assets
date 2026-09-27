@@ -9,7 +9,7 @@ The portal lists current chapter/national logos, lets an authorized National edi
 1. Create a **dedicated** Cloudflare Worker named `vbc-national-assets`. Protect the Worker with a Cloudflare Access policy that allows only the chosen National staff email addresses, using One-Time PIN or the organization's identity provider. Do not expose the Worker without Access. The Worker also rejects requests unless Cloudflare supplies an authenticated Access identity.
 2. Set `ALLOWED_EMAILS` to the same comma-separated National staff email addresses as a Worker variable. An empty or missing list denies everyone. Keep this list synchronized with the Access policy.
 3. Create a GitHub fine-grained personal access token limited to **only** `KolibaSA/vbc-brand-assets` with **Contents: Read and write**. Store it as the Worker secret `GITHUB_TOKEN`. Never put it in the repository or frontend. A dedicated GitHub App installation token may replace this later.
-4. From this directory, run `npm install`, `npm test`, then `npx wrangler deploy`. Confirm the deployed Worker is protected by Access before sharing its URL. Do a signed-in smoke test with a small test asset.
+4. Verify the intended VBC Cloudflare account and set its `account_id` in `wrangler.jsonc` before deploying; do not rely on a default account. From this directory, run `npm install`, `npm test`, then `npx wrangler deploy`. Confirm the deployed Worker is protected by Access before sharing its URL. Do a signed-in smoke test with a small test asset.
 
 No contributor email addresses or GitHub credentials are stored in this public repository. The portal fails closed until both Access and its server-side allowlist are configured. It does not use the chapter-page application's editor accounts or resources.
 
