@@ -36,7 +36,7 @@ function renderLogos() {
     const image = document.createElement('img'); image.src = publicUrl(asset.logo); image.alt = asset.name + ' logo'; image.loading = 'lazy'; imageBox.append(image);
     const name = document.createElement('h3'); name.textContent = asset.name;
     const actions = document.createElement('div'); actions.className = 'card-actions';
-    actions.append(button('Replace', 'secondary', () => openReplace(asset)));
+    const replace = button('Replace', 'secondary', () => openReplace(asset)); replace.disabled = !data.canPublish; actions.append(replace);
     actions.append(button('History', 'secondary', () => showHistory(asset, card)));
     const link = document.createElement('a'); link.className = 'button-link'; link.href = publicUrl(asset.logo); link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'View file'; actions.append(link);
     card.append(imageBox, name, actions); grid.append(card);
@@ -68,6 +68,8 @@ function renderFiles(id, files) {
 }
 async function load() {
   data = await api('/api/assets'); byId('account').textContent = data.email; renderLogos(); renderFiles('templates', data.templates); renderFiles('uploads', data.uploads);
+  byId('upload-form').querySelector('button[type=submit]').disabled = !data.canPublish;
+  if (!data.canPublish) notice('The library is ready to browse. Publishing will be enabled after the repository credential is configured.');
 }
 async function submit(form, path, success) {
   const button = form.querySelector('button[type=submit]'); button.disabled = true;

@@ -10,12 +10,14 @@ export class ApiError extends Error {
 }
 
 export async function github(env, path, options = {}) {
-  if (!env.GITHUB_TOKEN) throw new ApiError('Publishing is not configured', 503);
+  if (!env.GITHUB_TOKEN && options.method && options.method !== 'GET') {
+    throw new ApiError('Publishing is not configured', 503);
+  }
   const response = await fetch(`${API}${path}`, {
     ...options,
     headers: {
       Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      ...(env.GITHUB_TOKEN ? { Authorization: `Bearer ${env.GITHUB_TOKEN}` } : {}),
       'User-Agent': 'vbc-national-asset-portal',
       'X-GitHub-Api-Version': '2022-11-28',
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),

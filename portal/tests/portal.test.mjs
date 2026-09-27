@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import worker from '../src/worker.mjs';
-import { publish } from '../src/git.mjs';
+import { github, publish } from '../src/git.mjs';
 import { cleanFilename, prepareFiles, validateBytes } from '../src/validation.mjs';
 
 test('portal refuses requests without Cloudflare Access identity', async () => {
@@ -48,6 +48,17 @@ test('logo file signature must match the extension', () => {
 test('bulk upload rejects an existing filename before publishing', async () => {
   const file = new File([Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])], 'Flyer.PNG');
   await assert.rejects(() => prepareFiles([file], 'templates', ['templates/flyer.png']), /already exists/);
+});
+
+test('public assets remain browseable without a publishing credential', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => Response.json({ ok: true });
+  try {
+    assert.deepEqual(await github({}, '/contents/manifest.json'), { ok: true });
+    await assert.rejects(() => github({}, '/git/blobs', { method: 'POST', body: '{}' }), /Publishing is not configured/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test('publication creates one commit and never force-updates main', async () => {

@@ -147,7 +147,7 @@ export default {
       if (request.method === 'GET' && url.pathname === '/') return respond(html, 200, 'text/html; charset=utf-8');
       if (request.method === 'GET' && url.pathname === '/app.js') return respond(script, 200, 'text/javascript; charset=utf-8');
       if (request.method === 'GET' && url.pathname === '/app.css') return respond(styles, 200, 'text/css; charset=utf-8');
-      if (request.method === 'GET' && url.pathname === '/api/assets') return json({ email, ...(await listAssets(env)) });
+      if (request.method === 'GET' && url.pathname === '/api/assets') return json({ email, canPublish: Boolean(env.GITHUB_TOKEN), ...(await listAssets(env)) });
       if (request.method === 'GET' && url.pathname === '/api/history') return json(await history(env, url.searchParams));
       if (request.method === 'POST') {
         assertSameOrigin(request);
