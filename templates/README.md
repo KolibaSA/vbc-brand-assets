@@ -1,3 +1,3 @@
 # Design templates
 
-No approved VBC design templates have been supplied yet. VBC maintainers can add editable source files and exports here after review, then add their paths to `manifest.json`.
+Check `manifest.json` for the current approved template list. VBC National can publish new templates using its private asset portal; they become public immediately.

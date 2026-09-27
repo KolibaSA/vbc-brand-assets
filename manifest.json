@@ -27,5 +27,6 @@
     "washington-dc": { "name": "Washington D.C.", "logo": "logos/chapters/washington-dc.png" },
     "yolo": { "name": "Yolo-Solano", "logo": "logos/chapters/yolo.png" }
   },
-  "templates": []
+  "templates": [],
+  "uploads": []
 }

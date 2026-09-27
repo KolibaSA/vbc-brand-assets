@@ -14,7 +14,7 @@ The national logo is at [logos/national/vbc-logo.webp](logos/national/vbc-logo.w
 
 ## Templates
 
-See [templates/README.md](templates/README.md). No approved design templates have been supplied yet. Add them here only after national approval, then list them in `manifest.json`.
+See [templates/README.md](templates/README.md) and the `templates` list in `manifest.json`. National publishes approved templates through its separate, restricted asset portal. Other published files appear in the `uploads` list.
 
 ## Guidance for chapter AI assistants
 
@@ -22,6 +22,6 @@ Read [AI-START-HERE.md](AI-START-HERE.md). Use the exact logo file listed for th
 
 ## Source and use
 
-The logo and composite files are byte-for-byte copies of the assets used by the VBC site at source commit `7e70114ddcad3e47f15c4535f66be8aa415b3117`. The individual badge PNGs were extracted from VBC's supplied chapter artwork for that site. The site source repository is private; everything chapters need to read is here. This repository contains brand assets only; it does not include member data or editor access.
+The logo and composite files are byte-for-byte copies of the assets used by the VBC site at source commit `7e70114ddcad3e47f15c4535f66be8aa415b3117`. The individual badge PNGs were extracted from VBC's supplied chapter artwork for that site. The site source repository is private; everything chapters need to read is here. This repository contains brand assets and portal source code, but no member data, credentials, or editor access. The [running asset portal](portal/README.md) requires private National authorization; chapters cannot use it to change assets.
 
 VBC chapters may use these files for VBC chapter communications and activities. Public download access does not authorize unrelated uses of the VBC name or marks. Contact VBC national for a new logo, template, or other use.
